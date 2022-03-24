@@ -5,7 +5,7 @@ on:
     workflows:
       - "build"
     types:
-      - "requested"
+      - "completed"
     branches:
       - '*'
 jobs:
