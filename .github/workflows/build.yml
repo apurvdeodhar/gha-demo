@@ -12,3 +12,4 @@ jobs:
       - name: Print from build
         run: |
           echo "This is from build"
+          hadolint --help
