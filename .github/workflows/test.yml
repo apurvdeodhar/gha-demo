@@ -7,7 +7,7 @@ on:
     types:
       - "completed"
     branches:
-      - 'feature-branch'
+      - 'main'
 jobs:
   test:
     name: test
