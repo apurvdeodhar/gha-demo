@@ -12,7 +12,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Print from build
+      - name: Get the tag
+        id: get-tag
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+      - name: Print tag
         run: |
-          echo "This is from build"
-          hadolint --help
+          echo $tag
