@@ -1,6 +1,6 @@
-name: build
+# name: build
 
-on: [push]
+# on: [push]
 # jobs:
 #   build:
 #     name: build
@@ -14,17 +14,17 @@ on: [push]
 #       - name: Print tag
 #         run: |
 #           echo $tag
-jobs:
-  generate:
-    runs-on: ubuntu-latest
-    name: get tag
-    steps:
-      - uses: actions/checkout@v2.2.0
-      - uses: actions-ecosystem/action-get-latest-tag@v1
-        id: get-latest-tag
-      - name: Print tag
-        run: |
-          echo ${{ steps.get-latest-tag.outputs.tag }}
+# jobs:
+#   generate:
+#     runs-on: ubuntu-latest
+#     name: get tag
+#     steps:
+#       - uses: actions/checkout@v2.2.0
+#       - uses: actions-ecosystem/action-get-latest-tag@v1
+#         id: get-latest-tag
+#       - name: Print tag
+#         run: |
+#           echo ${{ steps.get-latest-tag.outputs.tag }}
 
       # - name: 'Get Previous tag'
       #   id: previoustag
