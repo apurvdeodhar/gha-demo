@@ -21,9 +21,20 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: apurvdeodhar/my_devops_demos:gha-demoV1
+
+      - name: Bump version and push tag
+        uses: Instrument/github-tag-action@v1.0
+        id: tag-bump
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUSH_TAG_GITHUB_TOKEN }}
+          BRANCH: develop
+          BUMP: minor
+      - name: Print output
+        run: |
+          echo ${{ steps.tag-bump.outputs.new_tag }}
+      # - name: Build and push
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: apurvdeodhar/my_devops_demos:${{ steps.tag-bump.outputs.new_tag }}
