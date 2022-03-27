@@ -22,7 +22,7 @@ jobs:
         uses: christian-draeger/increment-semantic-version@1.0.2
         with:
           current-version: ${{ steps.previoustag.outputs.tag }}
-          version-fragment: 'beta'
+          version-fragment: 'alpha'
       - name: Do something with your bumped release version
         run: echo ${{ steps.bump_version.outputs.next-version }}
         # will print 2.12.0
