@@ -17,15 +17,13 @@ jobs:
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         with:
           fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
-      - name: 'Get next minor version'
-        id: semvers
-        uses: "WyriHaximus/github-action-next-semvers@v1"
+      - name: Bump release version
+        id: bump_version
+        uses: cookbenjamin/update-version@v1.0.1
         with:
-          version: ${{ steps.previoustag.outputs.tag }}
-      - name: 'Create new milestone'
-        id: createmilestone
-        uses: "WyriHaximus/github-action-create-milestone@v1"
-        with:
-          title: ${{ steps.semvers.outputs.patch }}
-        env:
-          GITHUB_TOKEN: "${{ secrets.PUSH_TAG_GITHUB_TOKEN }}"
+          current-version: '${{ steps.previoustag.outputs.tag }}'
+          increment-version-fragment: 'PATCH'
+          prerelease-fragment: 'BETA'
+      - name: Do something with your bumped release version
+        run: |
+          echo ${{ steps.bump_version.outputs.next-version }}
