@@ -9,23 +9,46 @@ jobs:
   generate-tag:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.2.0
-        with:
-          fetch-depth: 0 # Required due to the weg Git works, without it this action won't be able to find any or the correct tags
-      - name: 'Get Previous tag'
-        id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
-        with:
-          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
-      - name: Bump release version
-        id: bump_version
-        uses: christian-draeger/increment-semantic-version@1.0.2
-        with:
-          current-version: ${{ steps.previoustag.outputs.tag }}
-          version-fragment: 'alpha'
-      - name: Do something with your bumped release version
-        run: echo ${{ steps.bump_version.outputs.next-version }}
-        # will print 2.12.0
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: '0'
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@1.36.0
+      id: foo
+      env:
+        GITHUB_TOKEN: ${{ secrets.PUSH_TAG_GITHUB_TOKEN }}
+        WITH_V: false
+        DEFAULT_BUMP: patch
+        RELEASE_BRANCHES: develop
+        DRY_RUN: true
+        PRERELEASE_SUFFIX: beta
+    - name: Print outputs
+      run: |
+        echo ${{ steps.foo.outputs.new_tag }}
+        echo ${{ steps.foo.outputs.tag }}
+        echo ${{ steps.foo.outputs.part }}
+
+# ---------------------------------------------------
+# Working beta
+# ---------------------------------------------------
+#       - uses: actions/checkout@v2.2.0
+#         with:
+#           fetch-depth: 0 # Required due to the weg Git works, without it this action won't be able to find any or the correct tags
+#       - name: 'Get Previous tag'
+#         id: previoustag
+#         uses: "WyriHaximus/github-action-get-previous-tag@v1"
+#         with:
+#           fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
+#       - name: Bump release version
+#         id: bump_version
+#         uses: christian-draeger/increment-semantic-version@1.0.2
+#         with:
+#           current-version: ${{ steps.previoustag.outputs.tag }}
+#           version-fragment: 'alpha'
+#       - name: Do something with your bumped release version
+#         run: echo ${{ steps.bump_version.outputs.next-version }}
+#         # will print 2.12.0
+# ---------------------------------------------------
       # - name: Bump release version
       #   id: bump_version
       #   uses: cookbenjamin/update-version@v1.0.1
@@ -36,18 +59,18 @@ jobs:
       # - name: Do something with your bumped release version
       #   run: |
       #     echo ${{ steps.bump_version.outputs.next-version }}
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: apurvdeodhar/my_devops_demos:${{ steps.bump_version.outputs.next-version }}
+      # - name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v1
+      # - name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v1
+      # - name: Login to DockerHub
+      #   uses: docker/login-action@v1
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # - name: Build and push
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: apurvdeodhar/my_devops_demos:${{ steps.bump_version.outputs.next-version }}
