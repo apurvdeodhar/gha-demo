@@ -8,6 +8,8 @@ on:
 jobs:
   generate-tag:
     runs-on: ubuntu-latest
+    outputs:
+      BUMPED_TAG: ${{ steps.foo.outputs.new_tag }}
     steps:
     - uses: actions/checkout@v2
       with:
@@ -28,6 +30,12 @@ jobs:
         echo ${{ steps.foo.outputs.tag }}
         echo ${{ steps.foo.outputs.part }}
 
+  print-tag-job2:
+    runs-on: ubuntu-latest
+    needs: generate-tag
+    steps:
+    - uses: actions/checkout@v2
+    - run: echo ${{ needs.generate-tag.outputs.BUMPED_TAG }}
 # ---------------------------------------------------
 # Working beta
 # ---------------------------------------------------
