@@ -19,7 +19,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.PUSH_TAG_GITHUB_TOKEN }}
         WITH_V: false
         DEFAULT_BUMP: patch
-        RELEASE_BRANCHES: develop
+        RELEASE_BRANCHES: master
         DRY_RUN: true
         PRERELEASE_SUFFIX: beta
     - name: Print outputs
